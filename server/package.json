@@ -8,7 +8,8 @@
     "build-dev": "npm run build && node --experimental-modules --es-module-specifier-resolution=node dist/server.js",
     "dev": "nodemon --ext ts --exec \"npm run build-dev\"",
     "start": "npm run build && node --experimental-modules --es-module-specifier-resolution=node dist/server.js",
-    "format": "prettier --write ./src/**/*"
+    "format": "prettier --write ./src/**/*",
+    "tsc:dev": "npx tsc --watch"
   },
   "type": "module",
   "author": "",

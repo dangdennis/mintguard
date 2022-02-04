@@ -3,30 +3,23 @@ import createError from "http-errors";
 import morgan from "morgan";
 import dotenv from "dotenv";
 dotenv.config();
-
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
-
 app.get("/", async (req, res, next) => {
-	res.send({ message: "Awesome it works" });
+    res.send({ message: "Awesome it works" });
 });
-
 import TestRoute from "./routes/api.route";
-
 app.use("/api", TestRoute);
-
 app.use((req, res, next) => {
-	next(new createError.NotFound());
+    next(new createError.NotFound());
 });
-
-app.use((err: any, _req: any, res: any, _next: any) => {
-	res.status(err.status || 500);
-	res.send({
-		status: err.status || 500,
-		message: err.message,
-	});
+app.use((err, _req, res, _next) => {
+    res.status(err.status || 500);
+    res.send({
+        status: err.status || 500,
+        message: err.message,
+    });
 });
-
 export default app;
