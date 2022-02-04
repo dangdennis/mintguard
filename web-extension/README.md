@@ -4,27 +4,12 @@ A basic TypeScript React Chrome Extension boilerplate that gets you started quic
 
 ## Get Started
 
-### Using `create-react-crx`
+Install [pnpm](https://pnpm.io/) as your package manager. Just trying something new.
 
-Type this into your terminal:
-
-```sh
-npx create-react-crx
+Inside web-extension directory,
 ```
-
-Follow the prompts to setup your Chrome extension project.
-
-### Using `git clone`
-
-Type this into your terminal:
-
-```sh
-git clone https://github.com/extend-chrome/ts-react-boilerplate.git my-chrome-extension
-cd my-chrome-extension
-npm install
+pnpm install
 ```
-
-> 🖌️ Update your package name and version in `package.json` before you get started!
 
 ### Development
 

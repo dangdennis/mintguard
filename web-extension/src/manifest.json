@@ -10,6 +10,7 @@
   "browser_action": { "default_popup": "pages/popup/index.html" },
   "permissions": [
     "activeTab",
+    "tabs",
     "storage",
     "clipboardRead",
     "webNavigation"

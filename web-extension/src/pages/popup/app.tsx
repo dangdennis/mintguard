@@ -29,8 +29,17 @@ function useStoreEnable() {
 export const App = (): JSX.Element => {
   const { enabled, setEnabled } = useStoreEnable()
 
+  useEffect(() => {
+    async function run() {
+      const lastCopied = await navigator.clipboard.readText()
+      console.log('lastCopied', lastCopied)
+    }
+
+    run()
+  })
+
   return (
-    <div className="w-48 h-48 p-2 text-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+    <div className="w-48 h-56 p-2 text-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
       <h1 className="text-lg font-bold text-white">Minting Protection</h1>
       <div
         className="grid w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
@@ -41,6 +50,16 @@ export const App = (): JSX.Element => {
       >
         <div className="flex justify-center w-full mt-6">
           <Toggle enabled={enabled} onClick={() => setEnabled(!enabled)} />
+        </div>
+        <div className="mt-4">
+          <input
+            type="text"
+            name="to_address"
+            id="to_address"
+            aria-label="To Address"
+            className="px-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+            placeholder="NFT Contract Address"
+          />
         </div>
         {enabled && (
           <div className="mt-4">
