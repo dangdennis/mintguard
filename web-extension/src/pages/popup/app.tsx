@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Toggle } from './toggle'
 // import axios from 'axios'
 
@@ -10,8 +10,24 @@ import { Toggle } from './toggle'
 //   },
 // })
 
-export const App = (): JSX.Element => {
+function useStoreEnable() {
   const [enabled, setEnabled] = useState(false)
+
+  useEffect(() => {
+    chrome.storage.local.get(['enabled'], (store) => {
+      setEnabled(store['enabled'])
+    })
+  }, [])
+
+  useEffect(() => {
+    chrome.storage.local.set({ enabled })
+  }, [enabled])
+
+  return { enabled, setEnabled }
+}
+
+export const App = (): JSX.Element => {
+  const { enabled, setEnabled } = useStoreEnable()
 
   return (
     <div className="w-48 h-48 p-2 text-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
@@ -29,8 +45,8 @@ export const App = (): JSX.Element => {
         {enabled && (
           <div className="mt-4">
             <p className="text-white">
-              We&apos;ll alert you if you&apos;re minting on a risky
-              site or an unverified NFT project.
+              We&apos;ll alert you if you&apos;re minting on a risky site or an
+              unverified NFT project.
             </p>
           </div>
         )}

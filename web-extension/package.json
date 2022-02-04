@@ -4,22 +4,12 @@
   "private": true,
   "description": "Keep calm and mint.",
   "keywords": [
-    "chrome-extension",
-    "web-extension",
-    "typescript",
-    "react",
-    "rollup"
+    "nft",
+    "web3",
+    "mintguard"
   ],
-  "homepage": "https://github.com/extend-chrome/ts-react-boilerplate#readme",
-  "bugs": {
-    "url": "https://github.com/extend-chrome/ts-react-boilerplate/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/extend-chrome/ts-react-boilerplate.git"
-  },
   "license": "MIT",
-  "author": "Jack Steam<jacksteamdev@gmail.com>",
+  "author": "Dennis Dang",
   "scripts": {
     "build": "rollup -c",
     "release": "cross-env NODE_ENV=production rollup -c",
