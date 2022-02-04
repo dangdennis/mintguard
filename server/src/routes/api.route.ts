@@ -1,8 +1,10 @@
 import express from "express";
+import { db } from "../database";
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
-	res.send({ message: "Ok api is working 🚀" });
+	const result = (await db.query("select 5 + 5 as sum")).rows[0];
+	res.send({ message: result.sum });
 });
 
 export default router;
