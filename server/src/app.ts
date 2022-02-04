@@ -2,7 +2,13 @@ import express from "express";
 import createError from "http-errors";
 import morgan from "morgan";
 import dotenv from "dotenv";
+import pg from "pg";
+
 dotenv.config();
+
+export const db = new pg.Client({
+	connectionString: process.env.MINTGUARD_DATABASE_URL,
+});
 
 const app = express();
 app.use(express.json());
