@@ -4,7 +4,24 @@ import { db, prisma } from "../database";
 const router = express.Router();
 
 router.get("/projects", async (req, res, next) => {
-	const projects = await prisma.project.findMany();
+	const query = req.query;
+	const projects = await prisma.project.findMany({
+		take: 10,
+		where: {
+			OR: [
+				{
+					contract_address: {
+						contains: query["contract_address"]?.toString(),
+					},
+				},
+				{
+					website: {
+						contains: query["website"]?.toString(),
+					},
+				},
+			],
+		},
+	});
 	console.log({ projects });
 	res.send({ data: projects });
 });

@@ -10,7 +10,8 @@
     "start": "node dist/server.js",
     "format": "prettier --write ./src/**/*",
     "tsc:dev": "npx tsc --watch",
-    "prisma": "prisma"
+    "prisma": "prisma",
+    "prisma:seed": "esbuild prisma/seed.ts --bundle --platform=node --outfile=prisma/seed.output.js --external:./node_modules/* && node prisma/seed.output.js"
   },
   "author": "",
   "license": "ISC",

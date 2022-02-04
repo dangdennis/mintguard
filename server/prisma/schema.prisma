@@ -10,7 +10,7 @@ datasource db {
 model Project {
   id               String   @id @unique @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
   project_name     String   @unique
-  contract_address String   @unique
+  contract_address String?  @unique
   website          String?  @unique
   discord          String?  @unique
   twitter          String?  @unique
