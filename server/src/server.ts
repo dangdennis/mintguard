@@ -1,5 +1,5 @@
 import app from "./app";
-import { db } from "./database";
+import { db, prisma } from "./database";
 
 const PORT = Number(process.env.PORT || 3000);
 

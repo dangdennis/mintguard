@@ -12,14 +12,14 @@ app.use(morgan("dev"));
 
 import APIRoute from "./routes/api.route";
 
-app.use(function (req, res, next) {
-	if (req.get("X-Forwarded-Proto") == "http") {
-		// request was via http, so redirect to https
-		res.redirect("https://" + req.headers.host + req.url);
-	} else {
-		next();
-	}
-});
+// app.use(function (req, res, next) {
+// 	if (req.get("X-Forwarded-Proto") == "http") {
+// 		// request was via http, so redirect to https
+// 		res.redirect("https://" + req.headers.host + req.url);
+// 	} else {
+// 		next();
+// 	}
+// });
 
 app.use("/", APIRoute);
 

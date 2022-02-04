@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("MINTGUARD_DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model Project {
+  id              String   @id @unique @default(uuid()) @db.Uuid
+  project_name     String
+  contract_address String
+  website          String?
+  discord          String?
+  twitter          String?
+  instagram        String?
+  email            String?
+  team_doxxed      Boolean? @default(false)
+  risk_score       Int?     @default(0)
+}
+
+enum artist_status {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum fraction_operation_type {
+  MERGED
+  SPLIT
+}
+
+enum transfer_type {
+  WITHDRAWAL
+  DEPOSIT
+}
