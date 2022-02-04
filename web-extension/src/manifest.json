@@ -1,4 +1,5 @@
 {
+  "name": "MintGuard",
   "background": { "scripts": ["background/index.ts"] },
   "content_scripts": [
     {

@@ -7,16 +7,15 @@ datasource db {
   url      = env("MINTGUARD_DATABASE_URL")
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
 model Project {
-  id              String   @id @unique @default(uuid()) @db.Uuid
-  project_name     String
-  contract_address String
-  website          String?
-  discord          String?
-  twitter          String?
-  instagram        String?
-  email            String?
+  id               String   @id @unique @default(dbgenerated("uuid_generate_v1()")) @db.Uuid
+  project_name     String   @unique
+  contract_address String   @unique
+  website          String?  @unique
+  discord          String?  @unique
+  twitter          String?  @unique
+  instagram        String?  @unique
+  email            String?  @unique
   team_doxxed      Boolean? @default(false)
   risk_score       Int?     @default(0)
 }
