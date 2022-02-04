@@ -551,6 +551,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 14rem;
 }
 
+.h-4 {
+  height: 1rem;
+}
+
 .w-48 {
   width: 12rem;
 }

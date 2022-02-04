@@ -52,14 +52,7 @@ export const App = (): JSX.Element => {
           <Toggle enabled={enabled} onClick={() => setEnabled(!enabled)} />
         </div>
         <div className="mt-4">
-          <input
-            type="text"
-            name="to_address"
-            id="to_address"
-            aria-label="To Address"
-            className="px-2 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
-            placeholder="NFT Contract Address"
-          />
+          <NFTAddressCheck></NFTAddressCheck>
         </div>
         {enabled && (
           <div className="mt-4">
@@ -71,5 +64,22 @@ export const App = (): JSX.Element => {
         )}
       </div>
     </div>
+  )
+}
+
+function NFTAddressCheck() {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [data, setData] = useState<[] | null>(null)
+
+  return (
+    <input
+      type="text"
+      name="to_address"
+      id="to_address"
+      aria-label="To Address"
+      className="px-2 h-6 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+      placeholder="Assess address NFT validity"
+    />
   )
 }
