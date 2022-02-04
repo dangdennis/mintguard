@@ -5,5 +5,5 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, async () => {
 	await db.connect();
-	console.log(`http://localhost:${PORT}`);
+	console.log(`server listening on port:${PORT}`);
 });
