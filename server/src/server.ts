@@ -1,9 +1,13 @@
 import app from "./app";
 import { db } from "./database";
 
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT || 3000);
 
-app.listen(PORT, async () => {
+app.listen(PORT, "0.0.0.0", async () => {
 	await db.connect();
-	console.log(`server listening on port:${PORT}`);
+	if (process.env.NODE_ENV !== "production") {
+		console.log(`server listening on http://localhost:3000/`);
+	} else {
+		console.log(`server listening on port ${PORT}`);
+	}
 });
