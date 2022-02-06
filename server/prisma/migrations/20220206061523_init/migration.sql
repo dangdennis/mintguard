@@ -18,6 +18,9 @@ CREATE TABLE "Project" (
     "instagram" TEXT,
     "email" TEXT,
     "team_doxxed" BOOLEAN DEFAULT false,
+    "upvotes" INTEGER NOT NULL DEFAULT 0,
+    "downvotes" INTEGER NOT NULL DEFAULT 0,
+    "chain_id" INTEGER NOT NULL DEFAULT 1,
     "risk_score" INTEGER DEFAULT 0,
 
     CONSTRAINT "Project_pkey" PRIMARY KEY ("id")

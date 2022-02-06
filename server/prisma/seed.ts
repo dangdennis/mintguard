@@ -33,17 +33,17 @@ async function main() {
 
 			// bad sites
 			{
-				project_name: "AzukiWorld",
+				project_name: "azuki.world",
 				risk_score: 100,
 				website: "azuki.world",
 			},
 			{
-				project_name: "MintAzukiStore",
+				project_name: "mint-azuki.store",
 				risk_score: 100,
 				website: "mint-azuki.store",
 			},
 			{
-				project_name: "MintAzukiClub",
+				project_name: "mint-azuki.club",
 				risk_score: 100,
 				website: "mint-azuki.club",
 			},
