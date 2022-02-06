@@ -15,35 +15,64 @@ router.post("/projects", async (req, res, next) => {
 
 		const project = await prisma.project.findFirst({
 			where: {
-				website: {
-					contains: body.website,
+				website: body.website,
+			},
+		});
+
+		if (project) {
+			const updatedProj = await prisma.project.upsert({
+				create: {
+					project_name: project.project_name,
+					website: project.website,
 				},
-			},
-		});
+				update: {
+					upvotes: project.upvotes + (body.upvoted ? 1 : 0),
+					downvotes: project.downvotes + (body.downvoted ? 1 : 0),
+				},
+				where: {
+					website: project.website ?? "",
+				},
+			});
 
-		const d = await prisma.project.upsert({
-			create: {
-				project_name: body.website,
-				website: body.website,
-			},
-			update: {
-				upvotes: (project?.upvotes ?? 0) + (body.upvoted ? 1 : 0),
-				downvotes: (project?.downvotes ?? 0) + (body.downvoted ? 1 : 0),
-			},
-			where: {
-				website: body.website,
-			},
-		});
+			console.log("updatedProj", updatedProj);
 
-		res.send({
-			data: {
-				website: d.website,
-				risk_score: d.risk_score,
-				upvoted: d.upvotes,
-				downvoted: d.downvotes,
-			},
-			message: "thanks",
-		});
+			res.send({
+				data: {
+					website: updatedProj.website,
+					risk_score: updatedProj.risk_score,
+					upvoted: updatedProj.upvotes,
+					downvoted: updatedProj.downvotes,
+				},
+			});
+
+			return;
+		} else {
+			const newProj = await prisma.project.upsert({
+				create: {
+					project_name: body.website,
+					website: body.website,
+					upvotes: body.upvoted ? 1 : 0,
+					downvotes: body.downvoted ? 1 : 0,
+				},
+				update: {},
+				where: {
+					website: body.website ?? "",
+				},
+			});
+
+			console.log("newProj", newProj);
+
+			res.send({
+				data: {
+					website: newProj.website,
+					risk_score: newProj.risk_score,
+					upvoted: newProj.upvotes,
+					downvoted: newProj.downvotes,
+				},
+			});
+
+			return;
+		}
 	} catch (err) {
 		console.log(err);
 		res.status(400).send({ message: "bad" });
@@ -80,9 +109,7 @@ router.get("/projects", async (req, res, next) => {
 		const projects = await prisma.project.findMany({
 			take: 10,
 			where: {
-				website: {
-					contains: website.toString(),
-				},
+				website: website?.toString(),
 			},
 		});
 		res.send({ data: projects });

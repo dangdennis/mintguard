@@ -18,7 +18,6 @@ function useNFTVerificationCheck(args: {
       const res: { data: TProject[] } = await fetch(
         `${baseURL}/projects?address=${address ?? ''}&website=${website ?? ''}`,
       ).then((r) => r.json())
-      console.log('res', res)
       return res
     },
   )
@@ -41,7 +40,6 @@ export function NFTAddressCheck(): React.ReactElement {
         className="px-2 h-6 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
         placeholder="Assess address NFT validity"
         onChange={(e) => {
-          console.log('input', e.target.value)
           if (e.target.value.startsWith('0x')) {
             setAddr(e.target.value)
           }

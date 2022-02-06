@@ -9,4 +9,6 @@ export type TProject = {
   email?: string
   team_doxxed: boolean
   risk_score: number
+  upvotes: number
+  downvotes: number
 }

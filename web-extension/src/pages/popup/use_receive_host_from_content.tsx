@@ -5,7 +5,6 @@ export function useReceiveHostFromContent(): { currentHost: string } {
 
   useEffect(() => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      console.log('tabs', tabs)
       if (tabs[0].url) {
         const url = new URL(tabs[0].url)
         setCurrentHost(url.host)
