@@ -101,7 +101,9 @@ router.get("/projects", async (req, res, next) => {
 	});
 
 	if (website) {
-		const projects = await db.query(`select * from public."Project" where website = $1`);
+		const projects = await db.query(`select * from public."Project" where website = $1`, [
+			website,
+		]);
 		res.send({ data: projects.rows });
 		return;
 	} else {
