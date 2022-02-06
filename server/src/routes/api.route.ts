@@ -89,23 +89,28 @@ router.get("/projects", async (req, res, next) => {
 		website,
 	});
 
-	if (addr && website) {
-		const result = await db.query(
-			`select * from "Project" where contract_address = $1 or website ilike $2`,
-			[addr, `%${query["website"]?.toString()}%`]
-		);
-		res.send({ data: result.rows });
-		return;
-	} else if (addr) {
-		const projects = await prisma.project.findMany({
-			take: 10,
-			where: {
-				contract_address: addr.toString(),
-			},
-		});
-		res.send({ data: projects });
-		return;
-	} else if (website) {
+	// TODO handle addresses and website
+	// if (addr && website) {
+	// 	const result = await db.query(
+	// 		`select * from "Project" where contract_address = $1 or website ilike $2`,
+	// 		[addr, `%${query["website"]?.toString()}%`]
+	// 	);
+	// 	res.send({ data: result.rows });
+	// 	return;
+	// }
+
+	// TODO handle addresses
+	// else if (addr) {
+	// 	const projects = await prisma.project.findMany({
+	// 		take: 10,
+	// 		where: {
+	// 			contract_address: addr.toString(),
+	// 		},
+	// 	});
+	// 	res.send({ data: projects });
+	// 	return;
+	// }
+	if (website) {
 		const projects = await prisma.project.findMany({
 			take: 10,
 			where: {

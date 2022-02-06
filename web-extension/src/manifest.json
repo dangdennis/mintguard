@@ -23,8 +23,6 @@
   "permissions": [
     "activeTab",
     "tabs",
-    "storage",
-    "clipboardRead",
-    "webNavigation"
+    "storage"
   ]
 }

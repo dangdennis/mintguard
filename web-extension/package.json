@@ -12,6 +12,7 @@
   "author": "Dennis Dang",
   "scripts": {
     "build": "rollup -c",
+    "build:test": "cross-env NODE_ENV=production rollup -c",
     "release": "cross-env NODE_ENV=production rollup -c",
     "start": "rollup -c -w",
     "tailwind:dev": "npx tailwindcss -i ./src/pages/popup/input.css -o ./src/pages/popup/output.css --watch",
