@@ -1,5 +1,14 @@
 import express from "express";
 import { db } from "../database";
+import axios from "axios";
+
+const covalent = axios.create({
+	baseURL: "https://api.covalenthq.com/v1",
+	params: {
+		format: "JSON",
+		key: process.env.COVALENT_KEY,
+	},
+});
 
 type TProject = {
 	id: string;
@@ -14,6 +23,7 @@ type TProject = {
 	risk_score: number;
 	upvotes: number;
 	downvotes: number;
+	chain_id: number;
 };
 
 const router = express.Router();
@@ -31,8 +41,6 @@ router.post("/projects", async (req, res, next) => {
 	}
 
 	try {
-		// todo some additional work here to calculate risk score
-
 		const [project] = (
 			await db.query<TProject>(`select * from public."Project" where website = $1`, [
 				body.website,
@@ -42,12 +50,42 @@ router.post("/projects", async (req, res, next) => {
 		if (project) {
 			console.log("existing proj", project);
 
+			// Use the covalent API to check if the address has NFT tokens
+			let alteredRisk = 0;
+			if (project.contract_address) {
+				const {
+					data,
+				}: {
+					data: {
+						updated_at: string;
+						items: any[];
+						pagination: {
+							has_more: boolean;
+							page_number: number;
+							page_size: number;
+							total_count: number;
+						};
+					};
+				} = (
+					await covalent.get(
+						`${project.chain_id}/tokens/${project.contract_address}/nft_token_ids/`
+					)
+				).data;
+
+				console.log("res", res);
+
+				if (data.pagination.total_count < 50) {
+					alteredRisk = 100;
+				}
+			}
+
 			const [updatedProj] = (
 				await db.query(
-					`update public."Project" set upvotes=$1, downvotes=$2 where website = $3 returning *;`,
+					`update public."Project" set upvotes=$1, downvotes=$2, risk_score=$3 where website = $4 returning *;`,
 					[
 						project.upvotes + (body.upvoted ? 1 : 0),
 						project.downvotes + (body.downvoted ? 1 : 0),
+						alteredRisk,
 						body.website,
 					]
 				)
