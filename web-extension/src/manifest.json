@@ -1,13 +1,25 @@
 {
+  "version": "3",
   "name": "MintGuard",
-  "background": { "scripts": ["background/index.ts"] },
+  "background": {
+    "scripts": [
+      "background/index.ts"
+    ]
+  },
   "content_scripts": [
     {
-      "js": ["content/index.ts"],
-      "matches": ["https://*/*", "http://*/*"]
+      "js": [
+        "content/index.ts"
+      ],
+      "matches": [
+        "https://*/*",
+        "http://*/*"
+      ]
     }
   ],
-  "browser_action": { "default_popup": "pages/popup/index.html" },
+  "browser_action": {
+    "default_popup": "pages/popup/index.html"
+  },
   "permissions": [
     "activeTab",
     "tabs",
