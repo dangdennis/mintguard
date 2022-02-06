@@ -4,10 +4,10 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
+    "start": "node dist/server.js",
+    "start:dev": "nodemon dist/server.js",
     "build": "esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js --external:./node_modules/*",
     "build:dev": "esbuild src/server.ts --bundle --platform=node --outfile=dist/server.js --external:./node_modules/* --watch",
-    "start:dev": "nodemon dist/server.js",
-    "start": "node dist/server.js",
     "format": "prettier --write ./src/**/*",
     "tsc:dev": "npx tsc --watch",
     "prisma": "prisma",

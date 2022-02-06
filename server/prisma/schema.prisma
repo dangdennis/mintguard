@@ -17,7 +17,14 @@ model Project {
   instagram        String?  @unique
   email            String?  @unique
   team_doxxed      Boolean? @default(false)
-  risk_score       Int?     @default(0)
+  upvotes          Int      @default(0)
+  downvotes        Int      @default(0)
+
+  // https://www.covalenthq.com/docs/api/#/0/Class-A/Get-ERC20-token-transfers-for-address/lng=en
+  // ethereum mainnet = 1, matic mainnet = 137
+  chain_id Int @default(1)
+
+  risk_score Int? @default(0)
 }
 
 enum artist_status {

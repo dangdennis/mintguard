@@ -30,7 +30,7 @@ async function main() {
 				instagram: "https://www.instagram.com/boredapeyachtclub/",
 				team_doxxed: true,
 			},
-			
+
 			// bad sites
 			{
 				project_name: "AzukiWorld",
