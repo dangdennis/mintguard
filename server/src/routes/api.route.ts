@@ -1,5 +1,20 @@
 import express from "express";
-import { db, prisma } from "../database";
+import { db } from "../database";
+
+type TProject = {
+	id: string;
+	project_name: string;
+	contract_address?: string;
+	website?: string;
+	discord?: string;
+	twitter?: string;
+	instagram?: string;
+	email?: string;
+	team_doxxed: boolean;
+	risk_score: number;
+	upvotes: number;
+	downvotes: number;
+};
 
 const router = express.Router();
 
@@ -10,29 +25,33 @@ router.post("/projects", async (req, res, next) => {
 		downvoted?: boolean;
 	} = req.body;
 
+	if (!body.website) {
+		res.status(400).send({ message: "website missing" });
+		return;
+	}
+
 	try {
 		// todo some additional work here to calculate risk score
 
-		const project = await prisma.project.findFirst({
-			where: {
-				website: body.website,
-			},
-		});
+		const [project] = (
+			await db.query<TProject>(`select * from public."Project" where website = $1`, [
+				body.website,
+			])
+		).rows;
 
 		if (project) {
-			const updatedProj = await prisma.project.upsert({
-				create: {
-					project_name: project.project_name,
-					website: project.website,
-				},
-				update: {
-					upvotes: project.upvotes + (body.upvoted ? 1 : 0),
-					downvotes: project.downvotes + (body.downvoted ? 1 : 0),
-				},
-				where: {
-					website: project.website ?? "",
-				},
-			});
+			console.log("existing proj", project);
+
+			const [updatedProj] = (
+				await db.query(
+					`update public."Project" set upvotes=$1, downvotes=$2 where website = $3 returning *;`,
+					[
+						project.upvotes + (body.upvoted ? 1 : 0),
+						project.downvotes + (body.downvoted ? 1 : 0),
+						body.website,
+					]
+				)
+			).rows;
 
 			console.log("updatedProj", updatedProj);
 
@@ -47,18 +66,12 @@ router.post("/projects", async (req, res, next) => {
 
 			return;
 		} else {
-			const newProj = await prisma.project.upsert({
-				create: {
-					project_name: body.website,
-					website: body.website,
-					upvotes: body.upvoted ? 1 : 0,
-					downvotes: body.downvoted ? 1 : 0,
-				},
-				update: {},
-				where: {
-					website: body.website ?? "",
-				},
-			});
+			const [newProj] = (
+				await db.query(
+					`insert into public."Project" (project_name, website, upvotes, downvotes) values ($1, $2, $3, $4) returning *;`,
+					[body.website, body.website, body.upvoted ? 1 : 0, body.downvoted ? 1 : 0]
+				)
+			).rows;
 
 			console.log("newProj", newProj);
 
@@ -81,49 +94,21 @@ router.post("/projects", async (req, res, next) => {
 
 router.get("/projects", async (req, res, next) => {
 	const query = req.query;
-	const addr = query["address"];
 	const website = query["website"];
 
 	console.log({
-		addr,
 		website,
 	});
 
-	// TODO handle addresses and website
-	// if (addr && website) {
-	// 	const result = await db.query(
-	// 		`select * from "Project" where contract_address = $1 or website ilike $2`,
-	// 		[addr, `%${query["website"]?.toString()}%`]
-	// 	);
-	// 	res.send({ data: result.rows });
-	// 	return;
-	// }
-
-	// TODO handle addresses
-	// else if (addr) {
-	// 	const projects = await prisma.project.findMany({
-	// 		take: 10,
-	// 		where: {
-	// 			contract_address: addr.toString(),
-	// 		},
-	// 	});
-	// 	res.send({ data: projects });
-	// 	return;
-	// }
 	if (website) {
-		const projects = await prisma.project.findMany({
-			take: 10,
-			where: {
-				website: website?.toString(),
-			},
-		});
-		res.send({ data: projects });
+		const projects = await db.query(
+			`select * from public."Project" where website = 'azuki.world'`
+		);
+		res.send({ data: projects.rows });
 		return;
 	} else {
-		const projects = await prisma.project.findMany({
-			take: 100,
-		});
-		res.send({ data: projects });
+		const projects = await db.query(`select * from public."Project" limit 100;`);
+		res.send({ data: projects.rows });
 	}
 });
 
