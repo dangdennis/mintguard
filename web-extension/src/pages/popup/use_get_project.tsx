@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { baseURL } from './base_url'
 import { TProject } from './project.type'
+import { useUpDownVote } from './use_up_down_vote'
 
 export function useGetProject(
   host: string,
@@ -8,7 +9,12 @@ export function useGetProject(
   data: TProject | null
   loading: boolean
   refetch(): void
+  vote: (args: {
+    upvoted?: boolean | undefined
+    downvoted?: boolean | undefined
+  }) => void
 } {
+  const { mutate } = useUpDownVote(host)
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<TProject | null>(null)
 
@@ -32,5 +38,5 @@ export function useGetProject(
     get()
   }, [host])
 
-  return { refetch: get, loading, data }
+  return { refetch: get, loading, data, vote: mutate }
 }
