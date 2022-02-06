@@ -101,9 +101,7 @@ router.get("/projects", async (req, res, next) => {
 	});
 
 	if (website) {
-		const projects = await db.query(
-			`select * from public."Project" where website = 'azuki.world'`
-		);
+		const projects = await db.query(`select * from public."Project" where website = $1`);
 		res.send({ data: projects.rows });
 		return;
 	} else {
